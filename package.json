@@ -1,0 +1,33 @@
+{
+  "name": "voiceroom",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "VoiceRoom - Real-time voice rooms with WebRTC, Socket.io, Node, and vanilla JS",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "webrtc",
+    "socket.io",
+    "voice",
+    "chat",
+    "rooms",
+    "node",
+    "express"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

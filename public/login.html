@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Voice Room</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="card">
+        <div class="header">
+            <div class="icon">🎧</div>
+            <div>
+                <h1>Voice Room</h1>
+                <p>Enter your name to continue</p>
+            </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: 1fr;">
+            <div class="block">
+                <h2>Welcome!</h2>
+                <p style="color: #00BFFF; margin-bottom: 20px;">Please enter your name to access the voice room</p>
+
+                <input type="text" id="usernameInput" placeholder="Enter your name" autofocus />
+
+                <button class="pink" id="loginBtn">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+
+</html>

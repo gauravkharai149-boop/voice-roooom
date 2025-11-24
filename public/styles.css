@@ -1,0 +1,372 @@
+/* ================= GLOBAL ================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background:
+    linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    url("./Gemini_Generated_Image_bvm1u9bvm1u9bvm1.png") center/cover no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  color: #00BFFF;
+}
+
+/* ================= CARD ================ */
+.card {
+  width: 90%;
+  max-width: 1150px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(14px);
+  border-radius: 25px;
+  padding: 35px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 1.2s ease;
+  color: #00BFFF;
+}
+
+/* ================= HEADER ================ */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-size: 2.4rem;
+  background: linear-gradient(135deg, #ff2fa3, #00BFFF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 6px rgba(255, 47, 163, 0.3), 0 0 8px rgba(0, 191, 255, 0.3);
+}
+
+.header p {
+  color: #00BFFF;
+  margin-top: 4px;
+  text-shadow: 0 0 3px rgba(0, 191, 255, 0.5);
+}
+
+.icon {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff57c4, #36d1ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  color: #fff;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+/* ================= GRID ================ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+/* ================= BLOCK ================ */
+.block {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 25px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(10px);
+  transition: 0.25s ease;
+  text-align: center;
+  color: #00BFFF;
+  box-shadow: 0 0 8px rgba(0, 191, 255, 0.15);
+}
+
+.block:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 12px rgba(0, 191, 255, 0.2);
+}
+
+.block h2 {
+  font-size: 1.6rem;
+  background: linear-gradient(135deg, #ff2fa3, #00BFFF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 15px;
+  text-shadow: 0 0 4px rgba(255, 47, 163, 0.3), 0 0 6px rgba(0, 191, 255, 0.3);
+}
+
+/* ================= INPUTS ================ */
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0 18px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  background: rgba(255, 255, 255, 0.6);
+  color: #004080;
+  text-shadow: none;
+}
+
+input::placeholder {
+  color: #333333;
+  opacity: 0.9;
+  font-weight: 500;
+  text-shadow: none;
+}
+
+/* ================= BUTTONS ================ */
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+  transition: 0.25s ease;
+  box-shadow: 0 4px 10px rgba(0, 191, 255, 0.2);
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(0, 191, 255, 0.3);
+}
+
+.pink {
+  background: linear-gradient(135deg, #ff2fa3, #ff88dd);
+}
+
+.blue {
+  background: linear-gradient(135deg, #2979ff, #52d0ff);
+}
+
+/* ================= ACTIVE ROOMS ================ */
+.rooms {
+  list-style: none;
+  padding: 0;
+}
+
+.rooms li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  color: #004080;
+  font-weight: 500;
+  box-shadow: 0 0 6px rgba(0, 191, 255, 0.15);
+}
+
+.rooms li .left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.rooms li .left span {
+  font-size: 24px;
+}
+
+.rooms li .left div {
+  display: flex;
+  flex-direction: column;
+}
+
+.rooms li .left b {
+  color: #004080;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.rooms li .left p {
+  color: #666;
+  font-size: 13px;
+  margin: 0;
+}
+
+.rooms li .join {
+  width: auto;
+  padding: 8px 20px;
+  margin: 0;
+  font-size: 14px;
+  background: linear-gradient(135deg, #2979ff, #52d0ff);
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.rooms input::placeholder {
+  color: #333333;
+  opacity: 0.9;
+  font-weight: 500;
+  text-shadow: none;
+}
+
+/* ================= CREATE / JOIN ROOM & CHAT ================= */
+.create-room input,
+.join-room input,
+.chat-room input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0 18px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  background: rgba(255, 255, 255, 0.6);
+  color: #004080;
+  text-shadow: none;
+}
+
+.create-room input::placeholder,
+.join-room input::placeholder,
+.chat-room input::placeholder {
+  color: #333333;
+  opacity: 0.9;
+  font-weight: 500;
+  text-shadow: none;
+}
+
+.create-room .room-text,
+.join-room .room-text,
+.chat-room .chat-text {
+  color: #004080;
+  font-weight: 500;
+}
+
+/* ================= ROOM PAGE ================ */
+.log-box {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+  font-size: 14px;
+  color: #004080;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+}
+
+.log-box div {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #004080;
+  font-weight: 500;
+}
+
+.log-box div:last-child {
+  border-bottom: none;
+}
+
+.block button {
+  margin: 8px 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.block button:first-of-type {
+  margin-top: 0;
+}
+
+.block button:last-of-type {
+  margin-bottom: 0;
+}
+
+#statusText,
+#participantCount {
+  color: #00BFFF;
+  font-weight: 600;
+}
+
+/* ================= ANIMATION ================ */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= MOBILE RESPONSIVENESS ================ */
+@media (max-width: 1400px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .block:last-child {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+    align-items: flex-start;
+  }
+
+  .card {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .header {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .header h1 {
+    font-size: 1.8rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .block {
+    padding: 15px;
+    grid-column: span 1;
+  }
+
+  .block:last-child {
+    grid-column: span 1;
+  }
+
+  .log-box {
+    max-height: 200px;
+  }
+
+  button {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  input {
+    padding: 12px;
+    font-size: 14px;
+  }
+}

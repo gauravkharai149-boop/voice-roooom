@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Room UI</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="icon">💬</div>
+      <div>
+        <h1>Chat Rooms</h1>
+        <p style="color: #056cd2;">Create or join a room instantly</p>
+        <p id="connectionStatus" style="color: #ff6b6b; font-size: 0.9rem; margin-top: 5px;">
+          <span id="statusDot"
+            style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #ff6b6b; margin-right: 5px;"></span>
+          Connecting...
+        </p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="block">
+        <h2>Create a Room</h2>
+        <input type="text" id="userNameCreate" placeholder="Your Name" />
+        <input type="text" id="roomName" placeholder="Room Topic" />
+        <button class="pink" id="createRoomBtn">Create Room</button>
+      </div>
+
+      <div class="block">
+        <h2>Join a Room</h2>
+        <input type="text" id="userNameJoin" placeholder="Your Name" />
+        <input type="text" id="roomIdInput" placeholder="Room ID" />
+        <button class="blue" id="joinRoomBtn">Join Room</button>
+      </div>
+
+      <div class="block">
+        <h2>Active Rooms</h2>
+        <ul class="rooms" id="activeRoomsList">
+          <!-- Rooms will be populated dynamically -->
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>
