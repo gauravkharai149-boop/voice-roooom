@@ -4,24 +4,38 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - Voice Room</title>
+    <title>Setup Profile - Voice Room</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
     <div class="card">
         <div class="header">
-            <div class="icon">🎧</div>
+            <div class="icon">👤</div>
             <div>
-                <h1>Voice Room</h1>
-                <p>Enter your name to continue</p>
+                <h1>Setup Profile</h1>
+                <p>Choose your display name</p>
             </div>
         </div>
 
         <div class="grid" style="grid-template-columns: 1fr;">
             <div class="block">
-                <h2>Welcome!</h2>
-                <p style="color: #00BFFF; margin-bottom: 20px;">Please enter your name to access the voice room</p>
+                <h2>Almost there!</h2>
+                <p style="color: #718096; margin-bottom: 20px;">Please enter your display name to join rooms</p>
+
+                <div style="margin: 20px 0; text-align: center;">
+                    <div
+                        style="width: 80px; height: 80px; border-radius: 50%; background: #e2e8f0; margin: 0 auto 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 2px solid #667eea;">
+                        <img id="avatarPreview" src=""
+                            style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                        <span id="avatarPlaceholder" style="font-size: 2rem;">👤</span>
+                    </div>
+                    <label for="avatarInput"
+                        style="cursor: pointer; color: #667eea; font-size: 0.9rem; font-weight: 600;">
+                        Upload Photo
+                    </label>
+                    <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                </div>
 
                 <input type="text" id="usernameInput" placeholder="Enter your name" autofocus />
 

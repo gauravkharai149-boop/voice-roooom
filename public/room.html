@@ -30,19 +30,40 @@
                 <button class="pink" id="muteBtn">
                     <span id="muteIcon">🔊</span> Mute AI
                 </button>
+                <button class="blue" id="shareScreenBtn">
+                    <span>🖥️</span> Share Screen
+                </button>
+            </div>
+
+            <!-- Participants Grid -->
+            <div class="block" style="grid-column: span 3;">
+                <h2>Participants</h2>
+                <div id="participantGrid"
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; margin-top: 10px;">
+                    <!-- Participant cards will be added here -->
+                </div>
+            </div>
+
+            <!-- Video Grid for Screen Sharing -->
+            <div class="block" id="videoContainer" style="display: none; grid-column: span 3;">
+                <h2>Shared Screens</h2>
+                <div id="videoGrid"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
+                    <!-- Video elements will be added here -->
+                </div>
             </div>
 
             <div class="block">
                 <h2>Room Info</h2>
                 <div style="text-align: left; padding: 15px;">
-                    <p style="color: #00BFFF; margin-bottom: 10px;">
+                    <p style="color: #718096; margin-bottom: 10px;">
                         <strong>Room ID:</strong> <span id="roomIdDisplay"
-                            style="font-family: monospace; background: rgba(255,255,255,0.3); padding: 2px 8px; border-radius: 4px;">-</span>
+                            style="font-family: monospace; background: #edf2f7; padding: 2px 8px; border-radius: 4px; color: #2d3748;">-</span>
                     </p>
-                    <p style="color: #00BFFF; margin-bottom: 10px;">
+                    <p style="color: #718096; margin-bottom: 10px;">
                         <strong>Status:</strong> <span id="statusText">Connecting...</span>
                     </p>
-                    <p style="color: #00BFFF; margin-bottom: 10px;">
+                    <p style="color: #718096; margin-bottom: 10px;">
                         <strong>Participants:</strong> <span id="participantCount">-</span>
                     </p>
                 </div>

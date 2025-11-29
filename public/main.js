@@ -1,12 +1,41 @@
-// Check if user is logged in
-const userName = localStorage.getItem("userName");
-if (!userName) {
-    window.location.href = "login.html";
+// Initialize socket connection
+const socket = io();
+let isConnected = false;
+
+// Circuit Breaker for Redirect Loops
+function checkRedirectLoop() {
+    const MAX_REDIRECTS = 3;
+    const TIME_WINDOW = 5000; // 5 seconds
+    const now = Date.now();
+    let loopData = JSON.parse(sessionStorage.getItem('redirectLoopData') || '{"count":0,"last":0}');
+
+    if (now - loopData.last < TIME_WINDOW) {
+        loopData.count++;
+    } else {
+        loopData.count = 1;
+    }
+    loopData.last = now;
+    sessionStorage.setItem('redirectLoopData', JSON.stringify(loopData));
+
+    if (loopData.count > MAX_REDIRECTS) {
+        console.error("Redirect loop detected!");
+        alert("Something is wrong. The page is redirecting too many times.\n\nWe have stopped it.");
+        return true; // Stop!
+    }
+    return false; // Safe to proceed
 }
 
-const socket = io();
+// Check if user is logged in
+const token = localStorage.getItem("authToken");
+const userName = localStorage.getItem("userName");
 
-let isConnected = false;
+if (!token) {
+    if (!checkRedirectLoop()) window.location.href = "/";
+} else if (!userName) {
+    if (!checkRedirectLoop()) window.location.href = "login.html";
+}
+
+let activeRooms = []; // Store rooms locally for filtering
 
 // Update connection status UI
 function updateConnectionStatus(connected, message) {
@@ -42,70 +71,42 @@ socket.on("connect_error", (error) => {
     isConnected = false;
     console.error("Connection error:", error);
     updateConnectionStatus(false, "Connection failed");
-    // alert("Failed to connect to server. Please make sure the server is running on http://localhost:8080 (or check the console for the actual port).");
 });
 
 // Create room
 document.getElementById("createRoomBtn").addEventListener("click", async () => {
     const roomName = document.getElementById("roomName").value.trim();
     const userName = document.getElementById("userNameCreate").value.trim();
+    const language = document.getElementById("roomLanguage").value;
+    const level = document.getElementById("roomLevel").value;
+    const limit = parseInt(document.getElementById("roomLimit").value) || 4;
+    const avatar = localStorage.getItem("userAvatar");
 
     if (!roomName) return alert("Enter a room name");
     if (!userName) return alert("Enter your name");
 
     // Wait for connection if not connected
     if (!isConnected) {
-        const waitForConnection = () => {
-            return new Promise((resolve) => {
-                if (isConnected) {
-                    resolve();
-                } else {
-                    const checkConnection = setInterval(() => {
-                        if (isConnected) {
-                            clearInterval(checkConnection);
-                            resolve();
-                        }
-                    }, 100);
-
-                    // Timeout after 5 seconds
-                    setTimeout(() => {
-                        clearInterval(checkConnection);
-                        if (!isConnected) {
-                            alert("Cannot connect to server. Please check if the server is running.");
-                        }
-                    }, 5000);
-                }
-            });
-        };
-
-        await waitForConnection();
-        if (!isConnected) return;
+        alert("Not connected to server. Please wait...");
+        return;
     }
 
     // Store user name for room page
     localStorage.setItem("userName", userName);
 
-    // Add timeout for create-room
-    const timeout = setTimeout(() => {
-        alert("Server did not respond. Please check if the server is running.");
-    }, 5000);
-
-    socket.emit("create-room", { topic: roomName, name: userName }, (response) => {
-        clearTimeout(timeout);
-
-        if (!response) {
-            alert("No response from server. Please try again.");
-            return;
-        }
-
-        if (response.ok) {
-            // Small delay to ensure room is fully set up before redirect
+    socket.emit("create-room", {
+        topic: roomName,
+        name: userName,
+        language,
+        level,
+        limit,
+        avatar
+    }, (response) => {
+        if (response && response.ok) {
             console.log(`Room created: ${response.roomId}, redirecting...`);
-            setTimeout(() => {
-                window.location.href = `room.html?room=${response.roomId}`;
-            }, 100); // 100ms delay
+            window.location.href = `room.html?room=${response.roomId}`;
         } else {
-            alert(response.error || "Failed to create room");
+            alert(response?.error || "Failed to create room");
         }
     });
 });
@@ -118,58 +119,98 @@ document.getElementById("joinRoomBtn").addEventListener("click", () => {
     if (!roomId) return alert("Enter Room ID");
     if (!userName) return alert("Enter your name");
 
-    // Store user name for room page
     localStorage.setItem("userName", userName);
-
     window.location.href = `room.html?room=${roomId}`;
 });
 
 // Helper function to join room
 function joinRoomFromList(roomId) {
-    // Check if we have a stored user name
     let userName = localStorage.getItem("userName");
 
-    // If no stored name, try to get from join form
     if (!userName) {
         const userNameInput = document.getElementById("userNameJoin");
         userName = userNameInput ? userNameInput.value.trim() : null;
     }
 
-    // If still no name, prompt
     if (!userName) {
         userName = prompt("Enter your name to join:") || "Anonymous";
     }
 
-    // Store for room page
     localStorage.setItem("userName", userName);
-
     window.location.href = `room.html?room=${roomId}`;
+}
+
+// Filter logic
+const languageFilter = document.getElementById("languageFilter");
+if (languageFilter) {
+    languageFilter.addEventListener("change", renderRooms);
+}
+
+function renderRooms() {
+    const list = document.getElementById("activeRoomsList");
+    if (!list) return;
+
+    list.innerHTML = "";
+
+    const filter = languageFilter ? languageFilter.value : "All";
+    const filteredRooms = filter === "All"
+        ? activeRooms
+        : activeRooms.filter(r => r.language === filter);
+
+    if (filteredRooms.length === 0) {
+        list.innerHTML = "<li style='padding: 1rem; color: #666; text-align: center;'>No active rooms found</li>";
+        return;
+    }
+
+    for (const r of filteredRooms) {
+        const isFull = r.participantCount >= r.limit;
+        const li = document.createElement("li");
+
+        // Flag mapping
+        const flags = {
+            "English": "🇺🇸", "Spanish": "🇪🇸", "French": "🇫🇷", "German": "🇩🇪",
+            "Japanese": "🇯🇵", "Korean": "🇰🇷", "Chinese": "🇨🇳", "Russian": "🇷🇺",
+            "Portuguese": "🇧🇷", "Hindi": "🇮🇳", "Arabic": "🇸🇦", "Other": "🌍"
+        };
+        const flag = flags[r.language] || "💬";
+
+        // Avatar HTML
+        let avatarHtml = '';
+        if (r.creatorAvatar) {
+            avatarHtml = `<img src="${r.creatorAvatar}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 10px; border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">`;
+        } else {
+            avatarHtml = `<div style="width: 40px; height: 40px; border-radius: 50%; background: #e2e8f0; margin-right: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">👤</div>`;
+        }
+
+        li.innerHTML = `
+            <div class="left">
+                ${avatarHtml}
+                <div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                        <b>${r.topic}</b>
+                        <span class="badge ${r.level.toLowerCase()}">${r.level}</span>
+                        <span style="font-size: 1.2rem; margin-left: 5px;">${flag}</span>
+                    </div>
+                    <p>
+                        <span style="color: ${isFull ? '#e53e3e' : '#48bb78'}; font-weight: 600;">
+                            ${r.participantCount}/${r.limit}
+                        </span> 
+                        participants • ${r.language}
+                    </p>
+                </div>
+            </div>
+            <button class="join" onclick="joinRoomFromList('${r.id}')" ${isFull ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+                ${isFull ? 'FULL' : 'JOIN'}
+            </button>
+        `;
+        list.appendChild(li);
+    }
 }
 
 // List active rooms
 socket.on("rooms-update", (rooms) => {
-    const list = document.getElementById("activeRoomsList");
-    list.innerHTML = "";
-
-    if (rooms.length === 0) {
-        list.innerHTML = "<li style='padding: 1rem; color: #666;'>No active rooms</li>";
-        return;
-    }
-
-    for (const r of rooms) {
-        const li = document.createElement("li");
-        li.innerHTML = `
-            <div class="left">
-                <span>🎧</span>
-                <div>
-                    <b>${r.topic}</b>
-                    <p>${r.id} • ${r.participantCount} participant${r.participantCount !== 1 ? 's' : ''}</p>
-                </div>
-            </div>
-            <button class="join" onclick="joinRoomFromList('${r.id}')">JOIN</button>
-        `;
-        list.appendChild(li);
-    }
+    activeRooms = rooms;
+    renderRooms();
 });
 
 // Handle Enter key for inputs
@@ -185,7 +226,6 @@ function handleEnterKey(inputId, buttonId) {
     }
 }
 
-// Add Enter key listeners
 handleEnterKey("userNameCreate", "createRoomBtn");
 handleEnterKey("roomName", "createRoomBtn");
 handleEnterKey("userNameJoin", "joinRoomBtn");

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Authentication - Voice Room</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #718096;
+            transition: all 0.2s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .auth-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            display: none;
+            text-align: center;
+        }
+
+        .success-message {
+            color: #38a169;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card" style="max-width: 450px;">
+        <div class="header" style="justify-content: center; flex-direction: column; text-align: center; gap: 10px;">
+            <div class="icon">🔐</div>
+            <div>
+                <h1>Voice Room</h1>
+                <p>Secure Voice & Chat Rooms</p>
+            </div>
+        </div>
+
+        <div class="auth-tabs">
+            <div class="auth-tab active" id="tab-login" onclick="switchTab('login')">Login</div>
+            <div class="auth-tab" id="tab-register" onclick="switchTab('register')">Register</div>
+        </div>
+
+        <div id="loginForm" class="auth-form active">
+            <div class="block" style="border: none; background: transparent; padding: 0; box-shadow: none;">
+                <h2>Welcome Back</h2>
+                <p id="loginError" class="error-message"></p>
+                <form onsubmit="handleLogin(event)">
+                    <input type="email" id="loginEmail" placeholder="Email Address" required />
+                    <input type="password" id="loginPassword" placeholder="Password" required />
+                    <button type="submit" class="pink">Login</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="registerForm" class="auth-form">
+            <div class="block" style="border: none; background: transparent; padding: 0; box-shadow: none;">
+                <h2>Create Account</h2>
+                <p id="registerError" class="error-message"></p>
+                <p id="registerSuccess" class="success-message"></p>
+                <form onsubmit="handleRegister(event)">
+                    <input type="email" id="registerEmail" placeholder="Email Address" required />
+                    <input type="password" id="registerPassword" placeholder="Password" required minlength="6" />
+                    <input type="password" id="registerConfirmPassword" placeholder="Confirm Password" required
+                        minlength="6" />
+                    <button type="submit" class="blue">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+
+</html>

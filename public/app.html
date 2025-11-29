@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Room UI</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="icon">💬</div>
+      <div>
+        <h1>Chat Rooms</h1>
+        <p style="color: #718096;">Create or join a room instantly</p>
+        <p id="connectionStatus" style="color: #ff6b6b; font-size: 0.9rem; margin-top: 5px;">
+          <span id="statusDot"
+            style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #ff6b6b; margin-right: 5px;"></span>
+          Connecting...
+        </p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="block">
+        <h2>Create a Room</h2>
+        <input type="text" id="userNameCreate" placeholder="Your Name" />
+        <input type="text" id="roomName" placeholder="Room Topic" />
+
+        <div style="display: flex; gap: 10px;">
+          <select id="roomLanguage"
+            style="flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; background: #fff; margin-bottom: 16px;">
+            <option value="English">🇺🇸 English</option>
+            <option value="Spanish">🇪🇸 Spanish</option>
+            <option value="French">🇫🇷 French</option>
+            <option value="German">🇩🇪 German</option>
+            <option value="Japanese">🇯🇵 Japanese</option>
+            <option value="Korean">🇰🇷 Korean</option>
+            <option value="Chinese">🇨🇳 Chinese</option>
+            <option value="Russian">🇷🇺 Russian</option>
+            <option value="Portuguese">🇧🇷 Portuguese</option>
+            <option value="Hindi">🇮🇳 Hindi</option>
+            <option value="Arabic">🇸🇦 Arabic</option>
+            <option value="Other">🌍 Other</option>
+          </select>
+
+          <select id="roomLevel"
+            style="flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; background: #fff; margin-bottom: 16px;">
+            <option value="Any">Any Level</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; justify-content: center;">
+          <label style="color: #4a5568; font-size: 0.9rem; font-weight: 600;">Max Participants:</label>
+          <input type="number" id="roomLimit" value="4" min="2" max="10"
+            style="width: 80px; margin: 0; text-align: center;" />
+        </div>
+
+        <button class="pink" id="createRoomBtn">Create Room</button>
+      </div>
+
+      <div class="block">
+        <h2>Join a Room</h2>
+        <input type="text" id="userNameJoin" placeholder="Your Name" />
+        <input type="text" id="roomIdInput" placeholder="Room ID" />
+        <button class="blue" id="joinRoomBtn">Join Room</button>
+      </div>
+
+      <div class="block">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+          <h2 style="margin: 0;">Active Rooms</h2>
+          <select id="languageFilter"
+            style="width: auto; padding: 6px 12px; font-size: 0.85rem; margin: 0; border-radius: 6px; border: 1px solid #e2e8f0;">
+            <option value="All">All Languages</option>
+            <option value="English">🇺🇸 English</option>
+            <option value="Spanish">🇪🇸 Spanish</option>
+            <option value="French">🇫🇷 French</option>
+            <option value="German">🇩🇪 German</option>
+            <option value="Japanese">🇯🇵 Japanese</option>
+            <option value="Korean">🇰🇷 Korean</option>
+            <option value="Chinese">🇨🇳 Chinese</option>
+            <option value="Hindi">🇮🇳 Hindi</option>
+            <option value="Other">🌍 Other</option>
+          </select>
+        </div>
+        <ul class="rooms" id="activeRoomsList">
+          <!-- Rooms will be populated dynamically -->
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>
