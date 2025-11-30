@@ -4,7 +4,7 @@ const socket = io();
 const urlParams = new URLSearchParams(window.location.search);
 const roomId = urlParams.get("room");
 const userName = localStorage.getItem("userName");
-const userAvatar = localStorage.getItem("userAvatar");
+const userAvatar = localStorage.getItem("userAvatar") || null; // Optional avatar
 
 if (!roomId || !userName) {
     window.location.href = "app.html";

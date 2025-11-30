@@ -2,38 +2,8 @@
 const socket = io();
 let isConnected = false;
 
-// Circuit Breaker for Redirect Loops
-function checkRedirectLoop() {
-    const MAX_REDIRECTS = 3;
-    const TIME_WINDOW = 5000; // 5 seconds
-    const now = Date.now();
-    let loopData = JSON.parse(sessionStorage.getItem('redirectLoopData') || '{"count":0,"last":0}');
-
-    if (now - loopData.last < TIME_WINDOW) {
-        loopData.count++;
-    } else {
-        loopData.count = 1;
-    }
-    loopData.last = now;
-    sessionStorage.setItem('redirectLoopData', JSON.stringify(loopData));
-
-    if (loopData.count > MAX_REDIRECTS) {
-        console.error("Redirect loop detected!");
-        alert("Something is wrong. The page is redirecting too many times.\n\nWe have stopped it.");
-        return true; // Stop!
-    }
-    return false; // Safe to proceed
-}
-
 // Check if user is logged in
-const token = localStorage.getItem("authToken");
 const userName = localStorage.getItem("userName");
-
-if (!token) {
-    if (!checkRedirectLoop()) window.location.href = "/";
-} else if (!userName) {
-    if (!checkRedirectLoop()) window.location.href = "login.html";
-}
 
 let activeRooms = []; // Store rooms locally for filtering
 

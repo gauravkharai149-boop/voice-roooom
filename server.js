@@ -5,7 +5,6 @@ import { Server } from 'socket.io';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import fs from 'fs';
-import bcrypt from 'bcrypt';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -25,76 +24,19 @@ let io = new Server(server, {
 app.use(express.static(join(__dirname, 'public')));
 app.use(express.json());
 
-// Default route - serve auth page
+// Default route - serve app page directly
 app.get('/', (req, res) => {
-    res.sendFile(join(__dirname, 'public', 'auth.html'));
+    res.sendFile(join(__dirname, 'public', 'app.html'));
 });
 
-// Fallback for any other routes - serve index.html or login
+// Fallback for any other routes - serve app.html
 app.get('*', (req, res) => {
     // If requesting a file that doesn't exist, send 404
     if (req.path.includes('.')) {
         res.status(404).send('File not found');
     } else {
-        // Otherwise redirect to auth
-        res.sendFile(join(__dirname, 'public', 'auth.html'));
-    }
-});
-
-// User storage: email -> { passwordHash, email, verificationCode, isVerified }
-const users = new Map();
-
-// Auth Endpoints
-app.post('/api/register', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        if (!email || !password) {
-            return res.status(400).json({ error: 'Email and password are required' });
-        }
-
-        if (users.has(email)) {
-            return res.status(400).json({ error: 'Email already registered' });
-        }
-
-        const passwordHash = await bcrypt.hash(password, 10);
-
-        users.set(email, {
-            email,
-            passwordHash,
-            isVerified: true // Auto-verify users (no email verification required)
-        });
-
-        console.log(`User registered: ${email}`);
-
-        res.json({ ok: true, message: 'Registration successful! You can now login.' });
-    } catch (err) {
-        console.error('Registration error:', err);
-        res.status(500).json({ error: 'Registration failed' });
-    }
-});
-
-app.post('/api/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        const user = users.get(email);
-        if (!user) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
-
-        const match = await bcrypt.compare(password, user.passwordHash);
-        if (!match) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
-
-        // Generate a simple token (in production use JWT)
-        const token = Buffer.from(email).toString('base64');
-
-        res.json({ ok: true, token, email });
-    } catch (err) {
-        console.error('Login error:', err);
-        res.status(500).json({ error: 'Login failed' });
+        // Otherwise redirect to home
+        res.sendFile(join(__dirname, 'public', 'app.html'));
     }
 });
 
