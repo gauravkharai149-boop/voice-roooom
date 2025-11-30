@@ -287,9 +287,17 @@ button:active {
 }
 
 /* ================= MOBILE RESPONSIVENESS ================ */
+.full-width-block {
+  grid-column: span 3;
+}
+
 @media (max-width: 1024px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .full-width-block {
+    grid-column: span 2;
   }
 
   .block:last-child {
@@ -299,196 +307,20 @@ button:active {
 
 @media (max-width: 768px) {
   body {
-    padding: 20px 12px;
+    padding: 10px;
   }
 
   .card {
-    padding: 24px;
+    padding: 20px;
+    border-radius: 12px;
   }
 
   .header {
-    margin-bottom: 28px;
-    padding-bottom: 20px;
-  }
-
-  .header h1 {
-    font-size: 1.5rem;
-  }
-
-}
-
-button:active {
-  transform: translateY(0);
-}
-
-.pink {
-  background: #667eea;
-}
-
-.pink:hover {
-  background: #5568d3;
-}
-
-.blue {
-  background: #4299e1;
-}
-
-.blue:hover {
-  background: #3182ce;
-}
-
-/* ================= ACTIVE ROOMS ================ */
-.rooms {
-  list-style: none;
-  padding: 0;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.rooms li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #ffffff;
-  padding: 16px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  transition: border-color 0.2s ease;
-}
-
-.rooms li:hover {
-  border-color: #cbd5e0;
-}
-
-.rooms li .left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 1;
-}
-
-.rooms li .left span {
-  font-size: 24px;
-}
-
-.rooms li .left div {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-}
-
-.rooms li .left b {
-  color: #2d3748;
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.rooms li .left p {
-  color: #718096;
-  font-size: 0.85rem;
-  margin: 0;
-  font-weight: 500;
-}
-
-.rooms li .join {
-  width: auto;
-  padding: 8px 20px;
-  margin: 0;
-  font-size: 0.9rem;
-  background: #4299e1;
-  border-radius: 6px;
-  white-space: nowrap;
-}
-
-.rooms li .join:hover {
-  background: #3182ce;
-}
-
-/* ================= ROOM PAGE ================ */
-.log-box {
-  background: #ffffff;
-  border-radius: 8px;
-  padding: 16px;
-  max-height: 300px;
-  overflow-y: auto;
-  font-size: 0.9rem;
-  color: #2d3748;
-  text-align: left;
-  border: 1px solid #e2e8f0;
-}
-
-.log-box div {
-  padding: 10px 0;
-  border-bottom: 1px solid #f7fafc;
-  color: #4a5568;
-  font-weight: 500;
-}
-
-.log-box div:last-child {
-  border-bottom: none;
-}
-
-.block button {
-  margin: 8px 0;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.block button:first-of-type {
-  margin-top: 0;
-}
-
-.block button:last-of-type {
-  margin-bottom: 0;
-}
-
-#statusText,
-#participantCount {
-  color: #667eea;
-  font-weight: 600;
-}
-
-/* ================= ANIMATION ================ */
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ================= MOBILE RESPONSIVENESS ================ */
-@media (max-width: 1024px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .block:last-child {
-    grid-column: span 2;
-  }
-}
-
-@media (max-width: 768px) {
-  body {
-    padding: 20px 12px;
-  }
-
-  .card {
-    padding: 24px;
-  }
-
-  .header {
-    margin-bottom: 28px;
-    padding-bottom: 20px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
   }
 
   .header h1 {
@@ -502,15 +334,36 @@ button:active {
 
   .block {
     padding: 20px;
-    grid-column: span 1;
+    grid-column: span 1 !important;
+    /* Force single column */
   }
 
-  .block:last-child {
-    grid-column: span 1;
+  .full-width-block {
+    grid-column: span 1 !important;
   }
 
   .log-box {
     max-height: 200px;
+  }
+
+  /* Improve touch targets */
+  button {
+    padding: 14px 20px;
+    font-size: 1rem;
+  }
+
+  input {
+    padding: 14px 16px;
+    font-size: 16px;
+    /* Prevent iOS zoom */
+  }
+
+  .chat-input-area {
+    flex-direction: column;
+  }
+
+  .chat-input-area button {
+    width: 100% !important;
   }
 }
 
